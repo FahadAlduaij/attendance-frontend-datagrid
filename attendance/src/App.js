@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { CssBaseline } from "@mui/material";
 
 // components
 import NavBar from "./components/NavBar";
@@ -9,11 +10,11 @@ import RoutesComponent from "./routes";
 
 function App() {
 	return (
-		<div className="App">
+		<CssBaseline>
 			<NavBar />
 
 			<RoutesComponent />
-		</div>
+		</CssBaseline>
 	);
 }
 
