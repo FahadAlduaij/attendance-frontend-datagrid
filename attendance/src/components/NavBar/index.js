@@ -3,22 +3,25 @@ import { observer } from "mobx-react";
 import { Navigate, useNavigate } from "react-router-dom";
 
 // MUI
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import {
+	Stack,
+	AppBar,
+	Box,
+	Toolbar,
+	IconButton,
+	Typography,
+	Menu,
+	Container,
+	Avatar,
+	Button,
+	ListItemIcon,
+	MenuItem,
+} from "@mui/material";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import MenuItem from "@mui/material/MenuItem";
 import Logout from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Stack } from "@mui/material";
 
 // components
 import ThemeColors from "../../theme/ThemeColors";
@@ -35,8 +38,8 @@ function NavBar() {
 
 	const pages = ["Home", "Vacation", "Emergency", "Excess"];
 
-	const currentProfile = authStore.user;
-	profileStore.profiles.find((profile) => profile._id === authStore.user._id);
+	// const currentProfile = authStore.user;
+	// // profileStore.profiles.find((profile) => profile._id === authStore.user._id);
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
