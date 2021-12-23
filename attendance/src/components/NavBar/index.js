@@ -1,4 +1,8 @@
 import React from "react";
+import { observer } from "mobx-react";
+import { useNavigate } from "react-router-dom";
+
+// MUI
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,15 +13,26 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import MenuItem from "@mui/material/MenuItem";
+import Logout from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
+// stores
+import authStore from "../../stores/authStore";
+import profileStore from "../../stores/profileStore";
 
 function NavBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
+	const navigate = useNavigate();
+	const currentProfile = profileStore.profiles.find(
+		(profile) => profile._id === authStore.user._id ?? ""
+	);
+
+	console.log(profileStore.profiles);
 
 	const pages = ["Dashboard", "Vacation", "Emergency", "Excess"];
-	const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
@@ -33,6 +48,13 @@ function NavBar() {
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
 	};
+
+	const handleLogout = (e) => {
+		e.preventDefault();
+		authStore.logout();
+		navigate("/login");
+	};
+
 	return (
 		<AppBar
 			position="static"
@@ -108,7 +130,7 @@ function NavBar() {
 
 					<Box sx={{ flexGrow: 0 }}>
 						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-							<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+							<Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
 						</IconButton>
 
 						<Menu
@@ -127,11 +149,18 @@ function NavBar() {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							{settings.map((setting) => (
-								<MenuItem key={setting} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">{setting}</Typography>
-								</MenuItem>
-							))}
+							<MenuItem>
+								<ListItemIcon>
+									<AccountCircleIcon fontSize="small" />
+								</ListItemIcon>
+								<Typography textAlign="center">Profile</Typography>
+							</MenuItem>
+							<MenuItem onClick={handleLogout}>
+								<ListItemIcon>
+									<Logout fontSize="small" />
+								</ListItemIcon>
+								<Typography textAlign="center">Logout</Typography>
+							</MenuItem>
 						</Menu>
 					</Box>
 				</Toolbar>
@@ -140,4 +169,4 @@ function NavBar() {
 	);
 }
 
-export default NavBar;
+export default observer(NavBar);

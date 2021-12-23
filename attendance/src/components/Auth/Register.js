@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,23 +9,23 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
+import { Stack } from "@mui/material";
 
 // components
 import ThemeColors from "../../theme/ThemeColors";
 
 // stores
 import authStore from "../../stores/authStore";
-import { Stack } from "@mui/material";
 
 function Register() {
-	const [userData, setUserData] = useState({
+	const [userData, setUserData] = React.useState({
 		username: "",
 		password: "",
 		profile: {
 			name: "",
 		},
 	});
+	const navigate = useNavigate();
 
 	const handleChange = (event) => {
 		setUserData({ ...userData, [event.target.name]: event.target.value });
@@ -36,8 +37,10 @@ function Register() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(userData);
+		authStore.register(userData);
+		navigate("/");
 	};
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -55,7 +58,7 @@ function Register() {
 					alignItems={"center"}
 					spacing={1}
 				>
-					<Avatar sx={{ m: 1, bgcolor: ThemeColors.primary }}>
+					<Avatar sx={{ m: 1, backgroundColor: ThemeColors.primary }}>
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
@@ -72,7 +75,6 @@ function Register() {
 						id="username"
 						label="Username"
 						name="username"
-						autoComplete="username"
 						autoFocus
 					/>
 					<TextField
@@ -85,7 +87,6 @@ function Register() {
 						label="Full Name"
 						type="text"
 						id="name"
-						autoComplete="current-name"
 					/>
 					<TextField
 						onChange={handleChange}
@@ -97,7 +98,6 @@ function Register() {
 						label="Password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
 					/>
 
 					<Button

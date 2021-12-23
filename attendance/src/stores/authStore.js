@@ -1,4 +1,4 @@
-import decode from "decode";
+import decode from "jwt-decode";
 import { makeAutoObservable, runInAction } from "mobx";
 import instance from "./instance";
 
@@ -30,18 +30,18 @@ class AuthStore {
 		}
 	};
 
-	login = async (userInfo) => {
+	login = async (userData) => {
 		try {
-			const res = await instance.post("/login", userInfo);
+			const res = await instance.post("/users/login", userData);
 			this.setUser(res.data.token);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	register = async (userInfo) => {
+	register = async (userData) => {
 		try {
-			const res = await instance.post("/register", userInfo);
+			const res = await instance.post("/users/register", userData);
 			this.setUser(res.data.token);
 		} catch (error) {
 			console.log(error);
