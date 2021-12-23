@@ -31,7 +31,7 @@ function Login() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		authStore.login(userData);
-		navigate("/");
+		navigate("/home");
 	};
 	return (
 		<Container component="main" maxWidth="xs">

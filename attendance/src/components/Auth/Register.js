@@ -38,7 +38,7 @@ function Register() {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		authStore.register(userData);
-		navigate("/");
+		navigate("/home");
 	};
 
 	return (
@@ -120,7 +120,7 @@ function Register() {
 							</Link>
 						</Grid>
 						<Grid item>
-							<Link to={"/login"} style={{ color: ThemeColors.primary }}>
+							<Link to={"/"} style={{ color: ThemeColors.primary }}>
 								<Typography variant="overline">
 									{"I already have an account."}
 								</Typography>

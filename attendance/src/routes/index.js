@@ -13,15 +13,12 @@ import authStore from "../stores/authStore";
 
 function RoutesPage() {
 	return (
-		<div>
-			<Routes>
-				<Route path="/register" element={<Register />} />
-				<Route path="/Login" element={<Login />} />
-				<Route exact path="/" element={<HomePage />} />
-				<Route path="*" element={<NotFound />} />
-				{/* <Route path="*" element={<Navigate to={"/login"} />} /> */}
-			</Routes>
-		</div>
+		<Routes>
+			<Route path="/home" element={<HomePage />} />
+			<Route path="/register" element={<Register />} />
+			<Route exact path="/" element={<Login />} />
+			<Route path="*" element={!authStore.user ? <Login /> : <NotFound />} />
+		</Routes>
 	);
 }
 

@@ -11,7 +11,7 @@ import authStore from "./stores/authStore";
 function App() {
 	return (
 		<CssBaseline>
-			{authStore.user !== null && <NavBar />}
+			<NavBar />
 			<RoutesPage />
 		</CssBaseline>
 	);
