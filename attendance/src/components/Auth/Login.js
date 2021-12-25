@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,19 +9,30 @@ import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Stack } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // components
 import ThemeColors from "../../theme/ThemeColors";
 
 // stores
 import authStore from "../../stores/authStore";
+import profileStore from "../../stores/profileStore";
 
 function Login() {
 	const [userData, setUserData] = React.useState({
 		username: "",
 		password: "",
 	});
+	const [open, setOpen] = React.useState(false);
+
 	const navigate = useNavigate();
+	const handleClose = () => {
+		setOpen(false);
+	};
+	const handleToggle = () => {
+		setOpen(!open);
+	};
 
 	const handleChange = (event) => {
 		setUserData({ ...userData, [event.target.name]: event.target.value });
@@ -30,12 +40,20 @@ function Login() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		authStore.login(userData);
-		navigate("/home");
+		handleToggle();
+		authStore.login(userData, navigate, userData.username);
+		profileStore.fetchProfiles();
 	};
+
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
+			<Backdrop
+				sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+				open={open}
+			>
+				<CircularProgress color="inherit" />
+			</Backdrop>
+
 			<Box
 				sx={{
 					marginTop: 8,

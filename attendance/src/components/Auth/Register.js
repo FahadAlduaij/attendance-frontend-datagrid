@@ -37,8 +37,7 @@ function Register() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		authStore.register(userData);
-		navigate("/home");
+		authStore.register(userData, navigate);
 	};
 
 	return (

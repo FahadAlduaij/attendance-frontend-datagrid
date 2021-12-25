@@ -8,6 +8,7 @@ class AuthStore {
 	}
 
 	user = null;
+	isSigned = false;
 
 	setUser = (token) => {
 		localStorage.setItem("myToken", token);
@@ -23,6 +24,7 @@ class AuthStore {
 			const tempUser = decode(token);
 			const time = tempUser.exp * 1000;
 			if (time > Date.now()) {
+				this.isSigned = true;
 				return this.setUser(token);
 			} else {
 				return this.logout();
@@ -30,19 +32,35 @@ class AuthStore {
 		}
 	};
 
-	login = async (userData) => {
+	login = async (userData, navigate, username) => {
 		try {
 			const res = await instance.post("/users/login", userData);
 			this.setUser(res.data.token);
+			setTimeout(
+				() =>
+					runInAction(() => {
+						this.isSigned = true;
+					}),
+				1000
+			);
+			setTimeout(() => navigate("/home", { state: username }), 1000);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	register = async (userData) => {
+	register = async (userData, navigate) => {
 		try {
 			const res = await instance.post("/users/register", userData);
 			this.setUser(res.data.token);
+			setTimeout(
+				() =>
+					runInAction(() => {
+						this.isSigned = true;
+					}),
+				1000
+			);
+			navigate("/home");
 		} catch (error) {
 			console.log(error);
 		}
@@ -53,6 +71,7 @@ class AuthStore {
 		localStorage.removeItem("myToken");
 		runInAction(() => {
 			this.user = null;
+			this.isSigned = false;
 		});
 	};
 }
