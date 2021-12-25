@@ -10,39 +10,47 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Stack } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // components
 import ThemeColors from "../../theme/ThemeColors";
 
 // stores
 import authStore from "../../stores/authStore";
+import profileStore from "../../stores/profileStore";
 
 function Register() {
 	const [userData, setUserData] = React.useState({
-		username: "",
+		email: "",
 		password: "",
-		profile: {
-			name: "",
-		},
+		name: "",
 	});
+	const [open, setOpen] = React.useState(false);
 	const navigate = useNavigate();
+
+	const handleToggle = () => {
+		setOpen(!open);
+	};
 
 	const handleChange = (event) => {
 		setUserData({ ...userData, [event.target.name]: event.target.value });
 	};
 
-	const handleProfile = (event) => {
-		setUserData({ ...userData, profile: { name: event.target.value } });
-	};
-
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		authStore.register(userData, navigate);
+		authStore.register(userData, navigate, handleToggle);
+		profileStore.fetchProfiles();
 	};
 
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
+			<Backdrop
+				sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+				open={open}
+			>
+				<CircularProgress color="inherit" />
+			</Backdrop>
 			<Box
 				sx={{
 					marginTop: 8,
@@ -67,18 +75,18 @@ function Register() {
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						onChange={handleChange}
-						value={userData.username}
+						value={userData.email}
 						margin="normal"
 						required
 						fullWidth
-						id="username"
-						label="Username"
-						name="username"
+						id="email"
+						label="Email"
+						name="email"
 						autoFocus
 					/>
 					<TextField
-						onChange={handleProfile}
-						value={userData.profile.name}
+						onChange={handleChange}
+						value={userData.name}
 						margin="normal"
 						required
 						fullWidth

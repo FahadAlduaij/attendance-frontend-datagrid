@@ -21,12 +21,13 @@ import profileStore from "../../stores/profileStore";
 
 function Login() {
 	const [userData, setUserData] = React.useState({
-		username: "",
+		email: "",
 		password: "",
 	});
 	const [open, setOpen] = React.useState(false);
 
 	const navigate = useNavigate();
+
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -40,8 +41,7 @@ function Login() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		handleToggle();
-		authStore.login(userData, navigate, userData.username);
+		authStore.login(userData, navigate, handleToggle);
 		profileStore.fetchProfiles();
 	};
 
@@ -78,13 +78,13 @@ function Login() {
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						onChange={handleChange}
-						value={userData.username}
+						value={userData.email}
 						margin="normal"
 						required
 						fullWidth
-						id="username"
-						label="Username"
-						name="username"
+						id="email"
+						label="Email"
+						name="email"
 						autoFocus
 					/>
 

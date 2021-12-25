@@ -32,10 +32,11 @@ class AuthStore {
 		}
 	};
 
-	login = async (userData, navigate, username) => {
+	login = async (userData, navigate, handleToggle) => {
 		try {
 			const res = await instance.post("/users/login", userData);
 			this.setUser(res.data.token);
+			handleToggle();
 			setTimeout(
 				() =>
 					runInAction(() => {
@@ -43,16 +44,17 @@ class AuthStore {
 					}),
 				1000
 			);
-			setTimeout(() => navigate("/home", { state: username }), 1000);
+			setTimeout(() => navigate("/home"), 1000);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	register = async (userData, navigate) => {
+	register = async (userData, navigate, handleToggle) => {
 		try {
 			const res = await instance.post("/users/register", userData);
 			this.setUser(res.data.token);
+			handleToggle();
 			setTimeout(
 				() =>
 					runInAction(() => {
@@ -60,7 +62,7 @@ class AuthStore {
 					}),
 				1000
 			);
-			navigate("/home");
+			setTimeout(() => navigate("/home"), 1000);
 		} catch (error) {
 			console.log(error);
 		}

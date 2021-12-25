@@ -33,14 +33,8 @@ import profileStore from "../../stores/profileStore";
 function NavBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
-	const [userProfile, setUserProfile] = React.useState({
-		profile: {
-			name: "",
-			image: "",
-		},
-	});
 
-	const currentProfile = authStore.user
+	const currentProfile = authStore.isSigned
 		? profileStore.profiles.find(
 				(profile) => profile._id === authStore.user._id
 		  )
@@ -69,7 +63,7 @@ function NavBar() {
 		e.preventDefault();
 		handleCloseUserMenu();
 		authStore.logout();
-		navigate("/");
+		navigate("/login");
 	};
 
 	return (
@@ -155,17 +149,14 @@ function NavBar() {
 										alignItems={"center"}
 									>
 										<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-											<Avatar
-												alt="User Avatar"
-												src="/static/images/avatar/2.jpg"
-											/>
+											<Avatar alt="User Avatar" src={authStore.user.image} />
 
 											<Typography
 												marginLeft={1}
 												variant="body2"
 												color={ThemeColors.third}
 											>
-												{authStore.user.username}
+												{authStore.user.name}
 											</Typography>
 											<KeyboardArrowDownIcon
 												sx={{ color: ThemeColors.third }}
