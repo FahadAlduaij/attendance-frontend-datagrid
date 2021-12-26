@@ -42,8 +42,6 @@ function NavBar() {
 
 	const navigate = useNavigate();
 
-	const pages = ["Home", "Vacation", "Emergency", "Excess"];
-
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
 	};
@@ -57,6 +55,11 @@ function NavBar() {
 
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
+	};
+
+	const goToHome = () => {
+		handleCloseNavMenu();
+		navigate("/home");
 	};
 
 	const handleLogout = (e) => {
@@ -114,11 +117,9 @@ function NavBar() {
 										display: { xs: "block", md: "none" },
 									}}
 								>
-									{pages.map((page) => (
-										<MenuItem key={page} onClick={handleCloseNavMenu}>
-											<Typography textAlign="center">{page}</Typography>
-										</MenuItem>
-									))}
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography textAlign="center">Home</Typography>
+									</MenuItem>
 								</Menu>
 							</Box>
 							<Typography
@@ -130,18 +131,21 @@ function NavBar() {
 								Attendance
 							</Typography>
 							<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-								{pages.map((page) => (
-									<Button
-										key={page}
-										onClick={handleCloseNavMenu}
-										sx={{ my: 2, color: "white", display: "block" }}
-									>
-										{page}
-									</Button>
-								))}
+								<Button
+									onClick={goToHome}
+									sx={{ my: 2, color: "white", display: "block" }}
+								>
+									Home
+								</Button>
+								<Button
+									onClick={handleCloseNavMenu}
+									sx={{ my: 2, color: "white", display: "block" }}
+								>
+									Not Home
+								</Button>
 							</Box>
 
-							{authStore.user && (
+							{authStore.isSigned && (
 								<Box sx={{ flexGrow: 0 }}>
 									<Stack
 										direction={"row"}

@@ -22,7 +22,7 @@ import profileStore from "../../stores/profileStore";
 
 function Register() {
 	const [userData, setUserData] = React.useState({
-		email: "",
+		username: "",
 		password: "",
 		name: "",
 	});
@@ -75,13 +75,13 @@ function Register() {
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						onChange={handleChange}
-						value={userData.email}
+						value={userData.username}
 						margin="normal"
 						required
 						fullWidth
-						id="email"
-						label="Email"
-						name="email"
+						id="username"
+						label="Username"
+						name="username"
 						autoFocus
 					/>
 					<TextField

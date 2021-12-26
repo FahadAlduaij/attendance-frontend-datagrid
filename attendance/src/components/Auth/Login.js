@@ -18,10 +18,11 @@ import ThemeColors from "../../theme/ThemeColors";
 // stores
 import authStore from "../../stores/authStore";
 import profileStore from "../../stores/profileStore";
+import absentStore from "../../stores/absentStore";
 
 function Login() {
 	const [userData, setUserData] = React.useState({
-		email: "",
+		username: "",
 		password: "",
 	});
 	const [open, setOpen] = React.useState(false);
@@ -78,13 +79,13 @@ function Login() {
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						onChange={handleChange}
-						value={userData.email}
+						value={userData.username}
 						margin="normal"
 						required
 						fullWidth
-						id="email"
-						label="Email"
-						name="email"
+						id="username"
+						label="Username"
+						name="username"
 						autoFocus
 					/>
 
