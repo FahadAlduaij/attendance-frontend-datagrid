@@ -7,6 +7,7 @@ import TableData from "./TableData";
 // stores
 import absentStore from "../../stores/absentStore";
 import authStore from "../../stores/authStore";
+import { Typography } from "@mui/material";
 
 function HomePage() {
 	const location = useLocation();
@@ -24,7 +25,9 @@ function HomePage() {
 				alignItems: "center",
 			}}
 		>
-			<h1>Fahad</h1>
+			<Typography variant="h4" mt={5} mb={3}>
+				Attendance
+			</Typography>
 			<TableData absent={absent} />
 		</div>
 	);

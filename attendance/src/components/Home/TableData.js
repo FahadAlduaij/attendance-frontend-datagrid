@@ -7,6 +7,7 @@ import authStore from "../../stores/authStore";
 import profileStore from "../../stores/profileStore";
 
 function TableData({ absent }) {
+	const [state, setstate] = React.useState("");
 	const columns = [
 		{ field: "id", headerName: "ID", width: 170 },
 		{ field: "user", headerName: "Name", width: 200 },
@@ -14,31 +15,26 @@ function TableData({ absent }) {
 		{
 			field: "day",
 			headerName: "Day",
-			type: "text",
 			width: 200,
 		},
 		{
 			field: "date",
 			headerName: "Date",
-			type: "text",
 			width: 200,
 		},
 		{
 			field: "type",
 			headerName: "Type",
-			type: "text",
 			width: 200,
 		},
 		{
 			field: "from",
 			headerName: "From",
-			type: "text",
 			width: 200,
 		},
 		{
 			field: "to",
 			headerName: "To",
-			type: "text",
 			width: 200,
 		},
 		// {
@@ -64,16 +60,19 @@ function TableData({ absent }) {
 		to: item.to,
 	}));
 
+	console.log(state);
+
 	return (
-		<div style={{ height: "100vh", width: "95%" }}>
+		<div style={{ width: "95%" }}>
 			<DataGrid
-				autoHeight
+				autoHeight={true}
 				rows={rows}
 				columns={columns}
 				autoPageSize
 				pageSize={100}
 				rowsPerPageOptions={[100]}
 				checkboxSelection
+				onSelectionModelChange={(e) => setstate(e)}
 			/>
 		</div>
 	);
