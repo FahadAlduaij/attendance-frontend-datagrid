@@ -18,6 +18,7 @@ import {
 	MenuItem,
 } from "@mui/material";
 
+import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Logout from "@mui/icons-material/Logout";
@@ -153,7 +154,11 @@ function NavBar() {
 										alignItems={"center"}
 									>
 										<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-											<Avatar alt="User Avatar" src={authStore.user.image} />
+											<Avatar
+												alt="User Avatar"
+												src={authStore.user.image}
+												children={<PersonIcon fontSize="medium" />}
+											/>
 
 											<Typography
 												marginLeft={1}

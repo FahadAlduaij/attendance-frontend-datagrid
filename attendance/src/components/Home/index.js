@@ -12,10 +12,6 @@ import { Typography } from "@mui/material";
 function HomePage() {
 	const location = useLocation();
 
-	const absent = absentStore.absents.filter(
-		(item) => item.user._id === authStore.user._id
-	);
-
 	return (
 		<div
 			style={{
@@ -28,7 +24,7 @@ function HomePage() {
 			<Typography variant="h4" mt={5} mb={3}>
 				Attendance
 			</Typography>
-			<TableData absent={absent} />
+			<TableData />
 		</div>
 	);
 }
