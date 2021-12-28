@@ -38,9 +38,21 @@ function EditToolbar(props) {
 	const { apiRef } = props;
 
 	const handleClick = () => {
+		absentStore.createAbsent();
 		const id = randomId();
-		apiRef.current.updateRows([{ id, isNew: true }]);
-		apiRef.current.setRowMode(id, "edit");
+		apiRef.current.updateRows([
+			{
+				id,
+				user: authStore.user.name,
+				day: "Sunday",
+				date: dateFormat(Date.now(), "mmmm dd yyyy"),
+				type: "Permission",
+				from: dateFormat(Date.now(), "mmmm dd yyyy"),
+				to: dateFormat(Date.now(), "mmmm dd yyyy"),
+				isNew: true,
+			},
+		]);
+		// apiRef.current.setRowMode(id, "edit");
 		// Wait for the grid to render with the new row
 		setTimeout(() => {
 			apiRef.current.scrollToIndexes({
@@ -114,6 +126,7 @@ function TableData() {
 	const handleDeleteClick = (id) => (event) => {
 		event.stopPropagation();
 		apiRef.current.updateRows([{ id, _action: "delete" }]);
+		absentStore.deleteAbsent(id);
 	};
 
 	const handleCancelClick = (id) => (event) => {

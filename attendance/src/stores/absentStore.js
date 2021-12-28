@@ -56,6 +56,18 @@ class AbsentStore {
 			console.log(error);
 		}
 	};
+
+	deleteAbsent = async (absentId) => {
+		try {
+			await instance.delete(`/absents/${absentId}`);
+			const filteredArray = this.absents.filter((a) => a._id !== absentId);
+			runInAction(() => {
+				this.absents = filteredArray;
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
 }
 
 const absentStore = new AbsentStore();
