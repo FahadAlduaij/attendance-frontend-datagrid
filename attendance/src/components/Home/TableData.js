@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import dateFormat, { masks } from "dateformat";
 import PropTypes from "prop-types";
-import { DataGrid } from "@mui/x-data-grid";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -16,7 +15,6 @@ import {
 	GridToolbarFilterButton,
 } from "@mui/x-data-grid-pro";
 import { LicenseInfo } from "@mui/x-data-grid-pro";
-import { randomId } from "@mui/x-data-grid-generator";
 
 import { Button, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -31,7 +29,6 @@ import { LicenseKey } from "./LicenseKey";
 // stores
 import absentStore from "../../stores/absentStore";
 import authStore from "../../stores/authStore";
-import profileStore from "../../stores/profileStore";
 
 LicenseInfo.setLicenseKey(LicenseKey);
 function EditToolbar(props) {
@@ -43,7 +40,7 @@ function EditToolbar(props) {
 		const row = [
 			{
 				id,
-				user: authStore.user,
+				user: authStore.user._id,
 				name: authStore.user.name,
 				day: "Sunday",
 				date: dateFormat(Date.now(), "mmmm dd yyyy"),
@@ -53,9 +50,10 @@ function EditToolbar(props) {
 				isNew: true,
 			},
 		];
-		absentStore.createAbsent(row);
+
 		apiRef.current.updateRows(row);
 		apiRef.current.setRowMode(id, "edit");
+
 		// Wait for the grid to render with the new row
 		setTimeout(() => {
 			apiRef.current.scrollToIndexes({
@@ -86,16 +84,7 @@ EditToolbar.propTypes = {
 };
 
 function TableData() {
-	const [editRowsModel, setEditRowsModel] = React.useState({});
-	const handleEditRowsModelChange = React.useCallback((model) => {
-		setEditRowsModel(model);
-	}, []);
-
 	const apiRef = useGridApiRef();
-
-	const absent = absentStore.absents.filter(
-		(item) => item.user._id === authStore.user._id
-	);
 
 	const handleRowEditStart = (params, event) => {
 		event.defaultMuiPrevented = true;
@@ -120,7 +109,12 @@ function TableData() {
 		apiRef.current.setRowMode(id, "view");
 
 		const row = apiRef.current.getRow(id);
-		absentStore.updateAbsent(row);
+
+		if (row.isNew) {
+			absentStore.createAbsent(row);
+		} else {
+			absentStore.updateAbsent(row);
+		}
 		apiRef.current.updateRows([{ ...row, isNew: false }]);
 	};
 
@@ -139,6 +133,10 @@ function TableData() {
 			apiRef.current.updateRows([{ id, _action: "delete" }]);
 		}
 	};
+
+	const absent = absentStore.absents.filter(
+		(item) => item.user._id === authStore.user._id
+	);
 
 	const rows = absent.map((item) => ({
 		id: item.id,

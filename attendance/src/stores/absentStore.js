@@ -23,9 +23,12 @@ class AbsentStore {
 	createAbsent = async (absentInfo) => {
 		try {
 			const res = await instance.post("/absents/posts", absentInfo);
-			runInAction(() => {
-				this.absents.push(res.data);
-			});
+			this.fetchAbsents();
+
+			// there is a problem in push with DataGrid Pro
+			// runInAction(() => {
+			// 	this.absents.push(res.data);
+			// });
 		} catch (error) {
 			console.log(error);
 		}
@@ -38,7 +41,7 @@ class AbsentStore {
 			);
 
 			const newAbsent = {
-				id: absent.id,
+				...foundAbsent,
 				day: absent.day,
 				date: absent.date,
 				type: absent.type,
@@ -46,7 +49,7 @@ class AbsentStore {
 				to: absent.to,
 			};
 
-			const res = await instance.put(`/absents/${absent.id}`, newAbsent);
+			const res = await instance.put(`/absents/${foundAbsent._id}`, newAbsent);
 			runInAction(() => {
 				this.absents.map((_absent) =>
 					_absent.id === absent.id ? res.data : _absent

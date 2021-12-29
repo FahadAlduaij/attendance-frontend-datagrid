@@ -1,13 +1,10 @@
 import React from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { observer } from "mobx-react";
+import { Typography } from "@mui/material";
 
 // components
 import TableData from "./TableData";
-
-// stores
-import absentStore from "../../stores/absentStore";
-import authStore from "../../stores/authStore";
-import { Typography } from "@mui/material";
 
 function HomePage() {
 	const location = useLocation();
@@ -29,4 +26,4 @@ function HomePage() {
 	);
 }
 
-export default HomePage;
+export default observer(HomePage);
