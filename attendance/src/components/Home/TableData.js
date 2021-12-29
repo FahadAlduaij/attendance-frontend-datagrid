@@ -1,9 +1,9 @@
 import React from "react";
 import { observer } from "mobx-react";
-import moment from "moment";
 import dateFormat, { masks } from "dateformat";
 import PropTypes from "prop-types";
 import { DataGrid } from "@mui/x-data-grid";
+import { v4 as uuidv4 } from "uuid";
 
 import {
 	useGridApiRef,
@@ -38,12 +38,13 @@ function EditToolbar(props) {
 	const { apiRef } = props;
 
 	const handleClick = () => {
-		absentStore.createAbsent();
-		const id = randomId();
-		apiRef.current.updateRows([
+		const id = uuidv4();
+
+		const row = [
 			{
 				id,
-				user: authStore.user.name,
+				user: authStore.user,
+				name: authStore.user.name,
 				day: "Sunday",
 				date: dateFormat(Date.now(), "mmmm dd yyyy"),
 				type: "Permission",
@@ -51,8 +52,10 @@ function EditToolbar(props) {
 				to: dateFormat(Date.now(), "mmmm dd yyyy"),
 				isNew: true,
 			},
-		]);
-		// apiRef.current.setRowMode(id, "edit");
+		];
+		absentStore.createAbsent(row);
+		apiRef.current.updateRows(row);
+		apiRef.current.setRowMode(id, "edit");
 		// Wait for the grid to render with the new row
 		setTimeout(() => {
 			apiRef.current.scrollToIndexes({
@@ -87,8 +90,6 @@ function TableData() {
 	const handleEditRowsModelChange = React.useCallback((model) => {
 		setEditRowsModel(model);
 	}, []);
-
-	console.log(editRowsModel);
 
 	const apiRef = useGridApiRef();
 
@@ -140,8 +141,8 @@ function TableData() {
 	};
 
 	const rows = absent.map((item) => ({
-		id: item._id,
-		user: item.user.name,
+		id: item.id,
+		name: item.name,
 		day: item.day,
 		date: dateFormat(item.date, "mmmm dd yyyy"),
 		type: item.type,
@@ -150,7 +151,7 @@ function TableData() {
 	}));
 
 	const columns = [
-		{ field: "user", headerName: "Name", width: 220 },
+		{ field: "name", headerName: "Name", width: 220 },
 		{
 			field: "day",
 			headerName: "Day",

@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
 import instance from "./instance";
-import moment from "moment";
 
 class AbsentStore {
 	constructor() {
@@ -35,21 +34,22 @@ class AbsentStore {
 	updateAbsent = async (absent) => {
 		try {
 			const foundAbsent = this.absents.find(
-				(_absent) => _absent._id === absent.id
+				(_absent) => _absent.id === absent.id
 			);
 
 			const newAbsent = {
+				id: absent.id,
 				day: absent.day,
 				date: absent.date,
 				type: absent.type,
 				from: absent.from,
 				to: absent.to,
 			};
-			console.log(newAbsent);
+
 			const res = await instance.put(`/absents/${absent.id}`, newAbsent);
 			runInAction(() => {
 				this.absents.map((_absent) =>
-					_absent._id === absent.id ? res.data : _absent
+					_absent.id === absent.id ? res.data : _absent
 				);
 			});
 		} catch (error) {
@@ -59,8 +59,14 @@ class AbsentStore {
 
 	deleteAbsent = async (absentId) => {
 		try {
-			await instance.delete(`/absents/${absentId}`);
-			const filteredArray = this.absents.filter((a) => a._id !== absentId);
+			const foundAbsent = this.absents.find(
+				(_absent) => _absent.id === absentId
+			);
+
+			await instance.delete(`/absents/${foundAbsent._id}`);
+			const filteredArray = this.absents.filter(
+				(a) => a._id !== foundAbsent._id
+			);
 			runInAction(() => {
 				this.absents = filteredArray;
 			});
