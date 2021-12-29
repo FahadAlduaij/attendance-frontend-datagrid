@@ -25,6 +25,7 @@ import CancelIcon from "@mui/icons-material/Close";
 
 // components
 import { LicenseKey } from "./LicenseKey";
+import ThemeColors from "../../theme/ThemeColors";
 
 // stores
 import absentStore from "../../stores/absentStore";
@@ -60,19 +61,80 @@ function EditToolbar(props) {
 				rowIndex: apiRef.current.getRowsCount() - 1,
 			});
 
-			apiRef.current.setCellFocus(id, "name");
+			apiRef.current.setCellFocus(id, "type");
 		});
 	};
 
 	return (
-		<GridToolbarContainer>
-			<Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+		<GridToolbarContainer
+			style={{ backgroundColor: ThemeColors.primary, height: 100 }}
+		>
+			<Button
+				startIcon={<AddIcon />}
+				onClick={handleClick}
+				sx={{
+					color: ThemeColors.secondary,
+					ml: 2,
+					fontWeight: 600,
+					height: "70%",
+					padding: 2,
+					":hover": {
+						backgroundColor: ThemeColors.secondary,
+						color: ThemeColors.primary,
+					},
+				}}
+			>
 				Add record
 			</Button>
-			<GridToolbarFilterButton style={{ marginLeft: 5 }} />
-			<GridToolbarColumnsButton style={{ marginLeft: 5 }} />
-			<GridToolbarDensitySelector style={{ marginLeft: 5 }} />
-			<GridToolbarExport style={{ marginLeft: 5 }} />
+			<GridToolbarFilterButton
+				sx={{
+					color: ThemeColors.secondary,
+					ml: 5,
+					height: "70%",
+					padding: 2,
+
+					":hover": {
+						backgroundColor: ThemeColors.secondary,
+						color: ThemeColors.primary,
+					},
+				}}
+			/>
+			<GridToolbarColumnsButton
+				sx={{
+					color: ThemeColors.secondary,
+					ml: 5,
+					height: "70%",
+					padding: 2,
+					":hover": {
+						backgroundColor: ThemeColors.secondary,
+						color: ThemeColors.primary,
+					},
+				}}
+			/>
+			<GridToolbarDensitySelector
+				sx={{
+					color: ThemeColors.secondary,
+					ml: 5,
+					height: "70%",
+					padding: 2,
+					":hover": {
+						backgroundColor: ThemeColors.secondary,
+						color: ThemeColors.primary,
+					},
+				}}
+			/>
+			<GridToolbarExport
+				sx={{
+					color: ThemeColors.secondary,
+					ml: 5,
+					height: "70%",
+					padding: 2,
+					":hover": {
+						backgroundColor: ThemeColors.secondary,
+						color: ThemeColors.primary,
+					},
+				}}
+			/>
 		</GridToolbarContainer>
 	);
 }

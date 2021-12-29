@@ -5,6 +5,8 @@ import { Typography } from "@mui/material";
 
 // components
 import TableData from "./TableData";
+import ThemeColors from "../../theme/ThemeColors";
+import { color } from "@mui/system";
 
 function HomePage() {
 	const location = useLocation();
@@ -18,7 +20,12 @@ function HomePage() {
 				alignItems: "center",
 			}}
 		>
-			<Typography variant="h4" mt={5} mb={3}>
+			<Typography
+				variant="h4"
+				mt={5}
+				mb={3}
+				sx={{ color: ThemeColors.primary }}
+			>
 				Attendance
 			</Typography>
 			<TableData />
