@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import TableData from "./TableData";
 import ThemeColors from "../../theme/ThemeColors";
 import { color } from "@mui/system";
+import authStore from "../../stores/authStore";
 
 function HomePage() {
 	const location = useLocation();
@@ -26,7 +27,7 @@ function HomePage() {
 				mb={3}
 				sx={{ color: ThemeColors.primary }}
 			>
-				Attendance
+				{`Welcome ${authStore.user.name}`}
 			</Typography>
 			<TableData />
 		</div>

@@ -123,12 +123,12 @@ function Register() {
 					<Grid container>
 						<Grid item xs>
 							<Link to={"/register"} style={{ color: ThemeColors.primary }}>
-								<Typography variant="overline">Forgot password?</Typography>
+								<Typography variant="body2">Forgot password?</Typography>
 							</Link>
 						</Grid>
 						<Grid item>
 							<Link to={"/"} style={{ color: ThemeColors.primary }}>
-								<Typography variant="overline">
+								<Typography variant="body2">
 									{"I already have an account."}
 								</Typography>
 							</Link>

@@ -117,20 +117,20 @@ function Login() {
 					<Grid container>
 						<Grid item xs>
 							<Link to={"/register"} style={{ color: ThemeColors.primary }}>
-								<Typography variant="overline">Forgot password?</Typography>
+								<Typography variant="body2">Forgot password?</Typography>
 							</Link>
 						</Grid>
 						<Grid item>
 							<Typography
 								style={{ color: ThemeColors.primary }}
-								variant="overline"
+								variant="body2"
 							>
 								Not registered yet?
 							</Typography>
 						</Grid>
 						<Grid item>
 							<Link to={"/register"} style={{ color: ThemeColors.primary }}>
-								<Typography marginLeft={0.3} variant="overline">
+								<Typography marginLeft={0.3} variant="body2">
 									Register
 								</Typography>
 							</Link>

@@ -76,7 +76,10 @@ function NavBar() {
 				<AppBar
 					position="static"
 					enableColorOnDark={true}
-					sx={{ backgroundColor: "#2b303a", borderColor: "#2b303a" }}
+					sx={{
+						backgroundColor: ThemeColors.primary,
+						borderColor: ThemeColors.primary,
+					}}
 				>
 					<Container maxWidth="xl">
 						<Toolbar disableGutters>
@@ -84,7 +87,15 @@ function NavBar() {
 								variant="h6"
 								noWrap
 								component="div"
-								sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+								sx={{
+									alignItems: "center",
+									justifyContent: "center",
+									mr: 2,
+									color: ThemeColors.secondary,
+									fontWeight: 700,
+									fontSize: "1.6rem",
+									display: { xs: "none", md: "flex" },
+								}}
 							>
 								Attendance
 							</Typography>
@@ -134,15 +145,33 @@ function NavBar() {
 							<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 								<Button
 									onClick={goToHome}
-									sx={{ my: 2, color: "white", display: "block" }}
+									sx={{
+										m: 2,
+										color: ThemeColors.secondary,
+										fontWeight: 700,
+										display: "block",
+										":hover": {
+											backgroundColor: ThemeColors.secondary,
+											color: ThemeColors.primary,
+										},
+									}}
 								>
 									Home
 								</Button>
 								<Button
 									onClick={handleCloseNavMenu}
-									sx={{ my: 2, color: "white", display: "block" }}
+									sx={{
+										m: 2,
+										color: ThemeColors.secondary,
+										fontWeight: 700,
+										display: "block",
+										":hover": {
+											backgroundColor: ThemeColors.secondary,
+											color: ThemeColors.primary,
+										},
+									}}
 								>
-									Not Home
+									Vacation
 								</Button>
 							</Box>
 
