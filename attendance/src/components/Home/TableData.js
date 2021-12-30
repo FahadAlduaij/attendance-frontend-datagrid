@@ -46,8 +46,6 @@ function EditToolbar(props) {
 				day: "Sunday",
 				date: dateFormat(Date.now(), "mmmm dd yyyy"),
 				type: "Permission",
-				from: dateFormat(Date.now(), "mmmm dd yyyy"),
-				to: dateFormat(Date.now(), "mmmm dd yyyy"),
 				isNew: true,
 			},
 		];
@@ -67,7 +65,7 @@ function EditToolbar(props) {
 
 	return (
 		<GridToolbarContainer
-			style={{ backgroundColor: ThemeColors.primary, height: 100 }}
+			style={{ backgroundColor: ThemeColors.primary, height: 70 }}
 		>
 			<Button
 				startIcon={<AddIcon />}
@@ -75,7 +73,6 @@ function EditToolbar(props) {
 				sx={{
 					color: ThemeColors.secondary,
 					ml: 2,
-					fontWeight: 600,
 					height: "70%",
 					padding: 2,
 					":hover": {
@@ -206,16 +203,14 @@ function TableData() {
 		day: item.day,
 		date: dateFormat(item.date, "mmmm dd yyyy"),
 		type: item.type,
-		from: dateFormat(item.from, "mmmm dd yyyy"),
-		to: dateFormat(item.to, "mmmm dd yyyy"),
 	}));
 
 	const columns = [
-		{ field: "name", headerName: "Name", width: 220 },
+		{ field: "name", headerName: "Name", width: 300 },
 		{
 			field: "day",
 			headerName: "Day",
-			width: 220,
+			width: 300,
 			editable: true,
 			type: "singleSelect",
 			valueOptions: ({ row }) => {
@@ -225,7 +220,7 @@ function TableData() {
 		{
 			field: "date",
 			headerName: "Date",
-			width: 220,
+			width: 300,
 			type: "date",
 			editable: true,
 		},
@@ -233,32 +228,19 @@ function TableData() {
 		{
 			field: "type",
 			headerName: "Type",
-			width: 220,
+			width: 300,
 			editable: true,
 			type: "singleSelect",
 			valueOptions: ({ row }) => {
 				return ["Permission", "Medical", "Emergency leave"];
 			},
 		},
-		{
-			field: "from",
-			headerName: "From",
-			width: 220,
-			type: "dateTime",
-			editable: true,
-		},
-		{
-			field: "to",
-			headerName: "To",
-			width: 220,
-			type: "dateTime",
-			editable: true,
-		},
+
 		{
 			field: "actions",
 			type: "actions",
 			headerName: "Actions",
-			width: 100,
+			width: 200,
 			cellClassName: "actions",
 			getActions: ({ id }) => {
 				const isInEditMode = apiRef.current.getRowMode(id) === "edit";

@@ -45,8 +45,6 @@ class AbsentStore {
 				day: absent.day,
 				date: absent.date,
 				type: absent.type,
-				from: absent.from,
-				to: absent.to,
 			};
 
 			const res = await instance.put(`/absents/${foundAbsent._id}`, newAbsent);
