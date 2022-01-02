@@ -9,9 +9,13 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Stack } from "@mui/material";
+import { FormControl, Input, InputLabel, Stack } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 // components
 import ThemeColors from "../../theme/ThemeColors";
@@ -26,6 +30,12 @@ function Register() {
 		password: "",
 		name: "",
 	});
+	const [confirmPassword, setConfirmPassword] = React.useState("");
+	const [passwordType, setPasswordType] = React.useState("password");
+	const [showPassword, setShowPassword] = React.useState(false);
+	const [notConfirmedPassword, setNotConfirmedPassword] = React.useState(false);
+	const [notConfirmedPasswordText, setNotConfirmedPasswordText] =
+		React.useState("");
 	const [open, setOpen] = React.useState(false);
 	const navigate = useNavigate();
 
@@ -37,41 +47,82 @@ function Register() {
 		setUserData({ ...userData, [event.target.name]: event.target.value });
 	};
 
+	const handleChangeConfirmPassword = (event) => {
+		setConfirmPassword(event.target.value);
+	};
+
+	const handleClickShowPassword = () => {
+		setShowPassword(!showPassword);
+
+		if (!showPassword) {
+			setPasswordType("text");
+		} else {
+			setPasswordType("password");
+		}
+	};
+
+	const handleCheckIfPasswordMatch = () => {
+		if (confirmPassword !== userData.password) {
+			setNotConfirmedPassword(true);
+			setNotConfirmedPasswordText("Password's not match.");
+		} else {
+			setNotConfirmedPassword(false);
+			setNotConfirmedPasswordText("");
+		}
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		authStore.register(userData, navigate, handleToggle);
-		profileStore.fetchProfiles();
+		handleCheckIfPasswordMatch();
+		if (!notConfirmedPassword) {
+			authStore.register(userData, navigate, handleToggle);
+			profileStore.fetchProfiles();
+		}
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container
+			component="main"
+			maxWidth="xxl"
+			sx={{
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				height: "100vh",
+				backgroundColor: ThemeColors.primary,
+			}}
+		>
 			<Backdrop
 				sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
 				open={open}
 			>
 				<CircularProgress color="inherit" />
 			</Backdrop>
+
 			<Box
 				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
+					width: { sm: "100%", md: "50%", lg: "30%" },
+					backgroundColor: ThemeColors.light,
+					borderRadius: 2,
+					py: 10,
+					px: 5,
 				}}
 			>
 				<Stack
-					direction={"row"}
+					direction={"column"}
 					justifyContent={"center"}
 					alignItems={"center"}
 					spacing={1}
 				>
-					<Avatar sx={{ m: 1, backgroundColor: ThemeColors.primary }}>
+					<Avatar sx={{ m: 1, backgroundColor: ThemeColors.secondary }}>
 						<LockOutlinedIcon />
 					</Avatar>
-					<Typography component="h1" variant="h5">
+					<Typography component="h1" variant="h5" color={ThemeColors.primary}>
 						Register
 					</Typography>
 				</Stack>
+
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
 						onChange={handleChange}
@@ -95,6 +146,7 @@ function Register() {
 						type="text"
 						id="name"
 					/>
+
 					<TextField
 						onChange={handleChange}
 						value={userData.password}
@@ -103,8 +155,48 @@ function Register() {
 						fullWidth
 						name="password"
 						label="Password"
-						type="password"
+						type={passwordType}
 						id="password"
+						error={notConfirmedPassword}
+						helperText={notConfirmedPasswordText}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										edge="end"
+									>
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
+					/>
+					<TextField
+						onChange={handleChangeConfirmPassword}
+						value={confirmPassword}
+						margin="normal"
+						required
+						fullWidth
+						name="confirmPassword"
+						label="Confirm Password"
+						type={passwordType}
+						id="confirmPassword"
+						error={notConfirmedPassword}
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										edge="end"
+									>
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
 					/>
 
 					<Button
@@ -120,14 +212,10 @@ function Register() {
 					>
 						Register
 					</Button>
+
 					<Grid container>
-						<Grid item xs>
-							<Link to={"/register"} style={{ color: ThemeColors.primary }}>
-								<Typography variant="body2">Forgot password?</Typography>
-							</Link>
-						</Grid>
-						<Grid item>
-							<Link to={"/"} style={{ color: ThemeColors.primary }}>
+						<Grid item ml={"auto"}>
+							<Link to={"/"} style={{ color: ThemeColors.third }}>
 								<Typography variant="body2">
 									{"I already have an account."}
 								</Typography>
