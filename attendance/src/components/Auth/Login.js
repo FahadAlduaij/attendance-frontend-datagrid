@@ -11,6 +11,10 @@ import Container from "@mui/material/Container";
 import { Stack } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 // components
 import ThemeColors from "../../theme/ThemeColors";
@@ -26,12 +30,16 @@ function Login() {
 		password: "",
 	});
 	const [open, setOpen] = React.useState(false);
+	const [passwordType, setPasswordType] = React.useState("password");
+	const [showPassword, setShowPassword] = React.useState(false);
+	const [errorStatus, setErrorStatus] = React.useState(false);
 
 	const navigate = useNavigate();
 
 	const handleClose = () => {
 		setOpen(false);
 	};
+
 	const handleToggle = () => {
 		setOpen(!open);
 	};
@@ -40,9 +48,19 @@ function Login() {
 		setUserData({ ...userData, [event.target.name]: event.target.value });
 	};
 
+	const handleClickShowPassword = () => {
+		setShowPassword(!showPassword);
+
+		if (!showPassword) {
+			setPasswordType("text");
+		} else {
+			setPasswordType("password");
+		}
+	};
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		authStore.login(userData, navigate, handleToggle);
+		authStore.login(userData, navigate, handleToggle, setErrorStatus);
 		profileStore.fetchProfiles();
 	};
 
@@ -71,7 +89,7 @@ function Login() {
 					width: { sm: "100%", md: "50%", lg: "30%" },
 					backgroundColor: ThemeColors.light,
 					borderRadius: 2,
-					py: 10,
+					py: 8,
 					px: 5,
 				}}
 			>
@@ -87,10 +105,21 @@ function Login() {
 					<Typography component="h1" variant="h5" color={ThemeColors.primary}>
 						User Login
 					</Typography>
+					{errorStatus && (
+						<Typography
+							color={"#f44336"}
+							m={1}
+							alignSelf={"center"}
+							justifySelf={"center"}
+						>
+							Username or password is incorrect.
+						</Typography>
+					)}
 				</Stack>
 
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField
+						error={errorStatus}
 						onChange={handleChange}
 						value={userData.username}
 						margin="normal"
@@ -103,6 +132,7 @@ function Login() {
 					/>
 
 					<TextField
+						error={errorStatus}
 						onChange={handleChange}
 						value={userData.password}
 						margin="normal"
@@ -110,8 +140,21 @@ function Login() {
 						fullWidth
 						name="password"
 						label="Password"
-						type="password"
+						type={passwordType}
 						id="password"
+						InputProps={{
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										aria-label="toggle password visibility"
+										onClick={handleClickShowPassword}
+										edge="end"
+									>
+										{showPassword ? <VisibilityOff /> : <Visibility />}
+									</IconButton>
+								</InputAdornment>
+							),
+						}}
 					/>
 
 					<Button
@@ -131,7 +174,13 @@ function Login() {
 					<Grid container>
 						<Grid item xs>
 							<Link to={"/register"} style={{ color: ThemeColors.third }}>
-								<Typography variant="body2">Forgot password?</Typography>
+								<Typography
+									fontWeight={600}
+									variant="body2"
+									sx={{ ":hover": { color: ThemeColors.thirdHover } }}
+								>
+									Forgot password?
+								</Typography>
 							</Link>
 						</Grid>
 						<Grid item>
@@ -141,7 +190,12 @@ function Login() {
 						</Grid>
 						<Grid item>
 							<Link to={"/register"} style={{ color: ThemeColors.third }}>
-								<Typography marginLeft={0.3} variant="body2">
+								<Typography
+									ml={0.4}
+									fontWeight={600}
+									variant="body2"
+									sx={{ ":hover": { color: ThemeColors.thirdHover } }}
+								>
 									Register
 								</Typography>
 							</Link>

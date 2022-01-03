@@ -32,7 +32,7 @@ class AuthStore {
 		}
 	};
 
-	login = async (userData, navigate, handleToggle) => {
+	login = async (userData, navigate, handleToggle, setErrorStatus) => {
 		try {
 			const res = await instance.post("/users/login", userData);
 			this.setUser(res.data.token);
@@ -45,7 +45,9 @@ class AuthStore {
 				1000
 			);
 			setTimeout(() => navigate("/home"), 1000);
+			setErrorStatus(false);
 		} catch (error) {
+			setErrorStatus(true);
 			console.log(error);
 		}
 	};

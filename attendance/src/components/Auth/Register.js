@@ -61,20 +61,15 @@ function Register() {
 		}
 	};
 
-	const handleCheckIfPasswordMatch = () => {
+	const handleSubmit = (event) => {
+		event.preventDefault();
+
 		if (confirmPassword !== userData.password) {
 			setNotConfirmedPassword(true);
 			setNotConfirmedPasswordText("Password's not match.");
 		} else {
 			setNotConfirmedPassword(false);
 			setNotConfirmedPasswordText("");
-		}
-	};
-
-	const handleSubmit = (event) => {
-		event.preventDefault();
-		handleCheckIfPasswordMatch();
-		if (!notConfirmedPassword) {
 			authStore.register(userData, navigate, handleToggle);
 			profileStore.fetchProfiles();
 		}
@@ -105,7 +100,7 @@ function Register() {
 					width: { sm: "100%", md: "50%", lg: "30%" },
 					backgroundColor: ThemeColors.light,
 					borderRadius: 2,
-					py: 10,
+					py: 8,
 					px: 5,
 				}}
 			>
@@ -119,7 +114,7 @@ function Register() {
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5" color={ThemeColors.primary}>
-						Register
+						User Register
 					</Typography>
 				</Stack>
 
@@ -213,11 +208,21 @@ function Register() {
 						Register
 					</Button>
 
-					<Grid container>
-						<Grid item ml={"auto"}>
+					<Grid container alignItems={"center"} justifyContent={"center"}>
+						<Grid item>
+							<Typography style={{ color: ThemeColors.third }} variant="body2">
+								Already have an account?
+							</Typography>
+						</Grid>
+						<Grid item>
 							<Link to={"/"} style={{ color: ThemeColors.third }}>
-								<Typography variant="body2">
-									{"I already have an account."}
+								<Typography
+									variant="body2"
+									ml={0.4}
+									fontWeight={600}
+									sx={{ ":hover": { color: ThemeColors.thirdHover } }}
+								>
+									Login
 								</Typography>
 							</Link>
 						</Grid>
