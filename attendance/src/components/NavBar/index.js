@@ -134,7 +134,7 @@ function NavBar() {
 									Home
 								</Button>
 								<Button
-									onClick={handleCloseNavMenu}
+									onClick={() => navigate("/permission")}
 									sx={{
 										m: 2,
 										color: ThemeColors.secondary,
@@ -146,7 +146,37 @@ function NavBar() {
 										},
 									}}
 								>
-									Vacation
+									Permission
+								</Button>
+								<Button
+									onClick={() => navigate("/medical")}
+									sx={{
+										m: 2,
+										color: ThemeColors.secondary,
+										fontWeight: 700,
+										display: "block",
+										":hover": {
+											backgroundColor: ThemeColors.secondary,
+											color: ThemeColors.primary,
+										},
+									}}
+								>
+									Medical
+								</Button>
+								<Button
+									onClick={() => navigate("/emergency")}
+									sx={{
+										m: 2,
+										color: ThemeColors.secondary,
+										fontWeight: 700,
+										display: "block",
+										":hover": {
+											backgroundColor: ThemeColors.secondary,
+											color: ThemeColors.primary,
+										},
+									}}
+								>
+									Emergency leave
 								</Button>
 							</Box>
 

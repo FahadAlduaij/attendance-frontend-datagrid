@@ -24,7 +24,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
 // components
-import { LicenseKey } from "./LicenseKey";
+import { LicenseKey } from "../../utils/LicenseKey";
 import ThemeColors from "../../theme/ThemeColors";
 
 // stores
@@ -142,7 +142,7 @@ EditToolbar.propTypes = {
 	}).isRequired,
 };
 
-function TableData() {
+function DataGrid() {
 	const apiRef = useGridApiRef();
 
 	const handleRowEditStart = (params, event) => {
@@ -315,4 +315,4 @@ function TableData() {
 	);
 }
 
-export default observer(TableData);
+export default observer(DataGrid);

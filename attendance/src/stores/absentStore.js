@@ -26,9 +26,6 @@ class AbsentStore {
 			this.fetchAbsents();
 
 			// there is a problem in push with DataGrid Pro
-			// runInAction(() => {
-			// 	this.absents.push(res.data);
-			// });
 		} catch (error) {
 			console.log(error);
 		}
@@ -53,6 +50,7 @@ class AbsentStore {
 					_absent.id === absent.id ? res.data : _absent
 				);
 			});
+			this.fetchAbsents();
 		} catch (error) {
 			console.log(error);
 		}
@@ -71,6 +69,7 @@ class AbsentStore {
 			runInAction(() => {
 				this.absents = filteredArray;
 			});
+			this.fetchAbsents();
 		} catch (error) {
 			console.log(error);
 		}
