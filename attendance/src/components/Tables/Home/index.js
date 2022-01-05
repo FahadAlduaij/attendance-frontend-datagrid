@@ -1,13 +1,13 @@
 import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { observer } from "mobx-react";
 import { Typography } from "@mui/material";
 
 // components
 import DataGrid from "./DataGrid";
-import ThemeColors from "../../theme/ThemeColors";
+import ThemeColors from "../../../theme/ThemeColors";
 
-function HomePage() {
+function Home() {
 	const location = useLocation();
 
 	return (
@@ -33,4 +33,4 @@ function HomePage() {
 	);
 }
 
-export default observer(HomePage);
+export default observer(Home);

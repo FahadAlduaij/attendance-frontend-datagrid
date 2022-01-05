@@ -24,12 +24,12 @@ import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
 // components
-import { LicenseKey } from "../../utils/LicenseKey";
-import ThemeColors from "../../theme/ThemeColors";
+import { LicenseKey } from "../../../utils/LicenseKey";
+import ThemeColors from "../../../theme/ThemeColors";
 
 // stores
-import absentStore from "../../stores/absentStore";
-import authStore from "../../stores/authStore";
+import absentStore from "../../../stores/absentStore";
+import authStore from "../../../stores/authStore";
 
 LicenseInfo.setLicenseKey(LicenseKey);
 function EditToolbar(props) {

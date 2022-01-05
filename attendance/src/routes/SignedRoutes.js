@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // components
-import HomePage from "../components/Home";
+import Home from "../components/Tables/Home";
 import Permission from "../components/Tables/Permission";
 import Medical from "../components/Tables/Medical";
 import Emergency from "../components/Tables/Emergency";
@@ -13,7 +13,7 @@ import Profile from "../components/Profile";
 function SignedRoutes() {
 	return (
 		<Routes>
-			<Route path="/home" element={<HomePage />} />
+			<Route path="/home" element={<Home />} />
 			<Route path="/permission" element={<Permission />} />
 			<Route path="/medical" element={<Medical />} />
 			<Route path="/emergency" element={<Emergency />} />
