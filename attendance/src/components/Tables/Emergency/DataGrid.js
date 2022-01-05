@@ -233,7 +233,7 @@ function DataGrid() {
 			editable: true,
 			type: "singleSelect",
 			valueOptions: ({ row }) => {
-				return ["Emergency leave"];
+				return ["Permission", "Medical", "Emergency leave"];
 			},
 		},
 

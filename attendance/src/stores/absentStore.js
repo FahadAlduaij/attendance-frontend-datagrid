@@ -69,7 +69,6 @@ class AbsentStore {
 			runInAction(() => {
 				this.absents = filteredArray;
 			});
-			this.fetchAbsents();
 		} catch (error) {
 			console.log(error);
 		}
