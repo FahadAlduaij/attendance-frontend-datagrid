@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { Typography } from "@mui/material";
 
 // components
-import DataGrid from "./DataGrid";
+import DataGrid from "../DataGrid";
 import ThemeColors from "../../../theme/ThemeColors";
 
 function Permission() {
@@ -25,7 +25,7 @@ function Permission() {
 			>
 				Permission
 			</Typography>
-			<DataGrid />
+			<DataGrid type={"Permission"} />
 		</div>
 	);
 }
