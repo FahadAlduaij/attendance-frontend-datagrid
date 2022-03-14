@@ -77,10 +77,39 @@ function DataGrid(props) {
 		}
 	};
 
+	const checkYear = (value) => {
+		const d = new Date();
+		let currentYear = d.getFullYear();
+
+		let newYear = value.getFullYear();
+		console.log(newYear);
+	};
+
+	// Filter if it was Permission page will have only same current month and year
+	// Other pages will have only same current year
+	// Home page will have all the records
 	const absent = props.type
-		? absentStore.absents
-				.filter((item) => item.user._id === authStore.user._id)
-				.filter((a) => a.type === props.type)
+		? props.type === "Permission"
+			? absentStore.absents
+					.filter((item) => item.user._id === authStore.user._id)
+					.filter((_date) => {
+						const currentDate = new Date();
+						let formattedCurrentDate = dateFormat(currentDate, "mm yyyy");
+						let formattedValueDate = dateFormat(_date.date, "mm yyyy");
+						let thisYear = formattedValueDate === formattedCurrentDate;
+						return thisYear;
+					})
+					.filter((a) => a.type === props.type)
+			: absentStore.absents
+					.filter((item) => item.user._id === authStore.user._id)
+					.filter((_date) => {
+						const currentDate = new Date();
+						let formattedCurrentDate = dateFormat(currentDate, "yyyy");
+						let formattedValueDate = dateFormat(_date.date, "yyyy");
+						let thisYear = formattedValueDate >= formattedCurrentDate;
+						return thisYear;
+					})
+					.filter((a) => a.type === props.type)
 		: absentStore.absents.filter(
 				(item) => item.user._id === authStore.user._id
 		  );
