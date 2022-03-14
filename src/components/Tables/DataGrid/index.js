@@ -77,9 +77,13 @@ function DataGrid(props) {
 		}
 	};
 
-	const absent = absentStore.absents
-		.filter((item) => item.user._id === authStore.user._id)
-		.filter((a) => a.type === props.type);
+	const absent = props.type
+		? absentStore.absents
+				.filter((item) => item.user._id === authStore.user._id)
+				.filter((a) => a.type === props.type)
+		: absentStore.absents.filter(
+				(item) => item.user._id === authStore.user._id
+		  );
 
 	const rows = absent.map((item) => ({
 		id: item.id,

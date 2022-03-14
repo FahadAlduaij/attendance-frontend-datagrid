@@ -1,15 +1,12 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import { observer } from "mobx-react";
 import { Typography } from "@mui/material";
 
 // components
-import DataGrid from "./DataGrid";
+import DataGrid from "../DataGrid";
 import ThemeColors from "../../../theme/ThemeColors";
 
-function Home() {
-	const location = useLocation();
-
+function Attendance({ type }) {
 	return (
 		<div
 			style={{
@@ -26,11 +23,11 @@ function Home() {
 				fontWeight={600}
 				sx={{ color: ThemeColors.primary }}
 			>
-				Home
+				{type ? type : "Home"}
 			</Typography>
-			<DataGrid />
+			<DataGrid type={type} />
 		</div>
 	);
 }
 
-export default observer(Home);
+export default observer(Attendance);
