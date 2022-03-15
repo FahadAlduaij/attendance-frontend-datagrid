@@ -77,14 +77,6 @@ function DataGrid(props) {
 		}
 	};
 
-	const checkYear = (value) => {
-		const d = new Date();
-		let currentYear = d.getFullYear();
-
-		let newYear = value.getFullYear();
-		console.log(newYear);
-	};
-
 	// Filter if it was Permission page will have only same current month and year
 	// Other pages will have only same current year
 	// Home page will have all the records

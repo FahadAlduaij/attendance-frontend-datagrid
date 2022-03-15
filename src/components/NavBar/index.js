@@ -38,9 +38,9 @@ function NavBar() {
 		setAnchorElNav(null);
 	};
 
-	const handleGoHome = () => {
+	const handleGoPage = (value) => {
 		handleCloseNavMenu();
-		navigate("/home");
+		navigate(`/${value}`);
 	};
 
 	return (
@@ -102,8 +102,17 @@ function NavBar() {
 										display: { xs: "block", md: "none" },
 									}}
 								>
-									<MenuItem onClick={handleCloseNavMenu}>
+									<MenuItem onClick={() => handleGoPage("home")}>
 										<Typography textAlign="center">Home</Typography>
+									</MenuItem>
+									<MenuItem onClick={() => handleGoPage("permission")}>
+										<Typography textAlign="center">Permission</Typography>
+									</MenuItem>
+									<MenuItem onClick={() => handleGoPage("medical")}>
+										<Typography textAlign="center">Medical</Typography>
+									</MenuItem>
+									<MenuItem onClick={() => handleGoPage("emergency")}>
+										<Typography textAlign="center">Emergency leave</Typography>
 									</MenuItem>
 								</Menu>
 							</Box>
@@ -119,7 +128,7 @@ function NavBar() {
 
 							<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 								<Button
-									onClick={handleGoHome}
+									onClick={() => handleGoPage("home")}
 									sx={{
 										m: 2,
 										color: ThemeColors.secondary,
@@ -134,7 +143,7 @@ function NavBar() {
 									Home
 								</Button>
 								<Button
-									onClick={() => navigate("/permission")}
+									onClick={() => handleGoPage("permission")}
 									sx={{
 										m: 2,
 										color: ThemeColors.secondary,
@@ -149,7 +158,7 @@ function NavBar() {
 									Permission
 								</Button>
 								<Button
-									onClick={() => navigate("/medical")}
+									onClick={() => handleGoPage("medical")}
 									sx={{
 										m: 2,
 										color: ThemeColors.secondary,
@@ -164,7 +173,7 @@ function NavBar() {
 									Medical
 								</Button>
 								<Button
-									onClick={() => navigate("/emergency")}
+									onClick={() => handleGoPage("emergency")}
 									sx={{
 										m: 2,
 										color: ThemeColors.secondary,
