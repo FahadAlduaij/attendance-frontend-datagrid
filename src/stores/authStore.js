@@ -1,5 +1,7 @@
 import decode from "jwt-decode";
 import { makeAutoObservable, runInAction } from "mobx";
+
+// stores
 import instance from "./instance";
 
 class AuthStore {
@@ -8,64 +10,75 @@ class AuthStore {
 	}
 
 	user = null;
-	isSigned = false;
+	isLoading = true;
 
 	setUser = (token) => {
 		localStorage.setItem("myToken", token);
 		instance.defaults.headers.common.Authorization = `Bearer ${token}`;
 		runInAction(() => {
 			this.user = decode(token);
+			this.isLoading = false;
 		});
 	};
 
 	checkForToken = () => {
 		const token = localStorage.getItem("myToken");
+
 		if (token) {
 			const tempUser = decode(token);
 			const time = tempUser.exp * 1000;
 			if (time > Date.now()) {
-				this.isSigned = true;
 				return this.setUser(token);
 			} else {
 				return this.logout();
 			}
 		}
+
+		runInAction(() => {
+			return (this.isLoading = false);
+		});
 	};
 
-	login = async (userData, navigate, handleToggle, setErrorStatus) => {
+	login = async (userData, setErrorStatus) => {
 		try {
+			this.isLoading = true;
+
 			const res = await instance.post("/users/login", userData);
+
 			this.setUser(res.data.token);
-			handleToggle();
-			setTimeout(
-				() =>
-					runInAction(() => {
-						this.isSigned = true;
-					}),
-				1000
-			);
-			setTimeout(() => navigate("/home"), 1000);
-			setErrorStatus(false);
+
+			runInAction(() => {
+				setErrorStatus(false);
+				window.location.replace("/home");
+				this.isLoading = false;
+			});
 		} catch (error) {
-			setErrorStatus(true);
+			runInAction(() => {
+				setErrorStatus(true);
+				this.isLoading = false;
+			});
+
 			console.log(error);
 		}
 	};
 
-	register = async (userData, navigate, handleToggle) => {
+	register = async (userData, setErrorStatus) => {
 		try {
+			this.isLoading = true;
+
 			const res = await instance.post("/users/register", userData);
 			this.setUser(res.data.token);
-			handleToggle();
-			setTimeout(
-				() =>
-					runInAction(() => {
-						this.isSigned = true;
-					}),
-				1000
-			);
-			setTimeout(() => navigate("/home"), 1000);
+
+			runInAction(() => {
+				setErrorStatus(false);
+				window.location.replace("/home");
+				this.isLoading = false;
+			});
 		} catch (error) {
+			runInAction(() => {
+				setErrorStatus(true);
+				this.isLoading = false;
+			});
 			console.log(error);
 		}
 	};
@@ -75,7 +88,7 @@ class AuthStore {
 		localStorage.removeItem("myToken");
 		runInAction(() => {
 			this.user = null;
-			this.isSigned = false;
+			this.isLoading = false;
 		});
 	};
 }

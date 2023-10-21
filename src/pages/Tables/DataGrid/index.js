@@ -1,28 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import dateFormat from "dateformat";
-
 import {
 	useGridApiRef,
 	DataGridPro,
 	GridActionsCellItem,
 } from "@mui/x-data-grid-pro";
 import { LicenseInfo } from "@mui/x-data-grid-pro";
-
 import { Box } from "@mui/material";
 
+// icons
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 
-// components
+// utils
 import { LicenseKey } from "../../../utils/LicenseKey";
-import EditToolbar from "../EditToolbar/";
+
+// components
+import EditToolbar from "../EditToolbar";
 
 // stores
 import absentStore from "../../../stores/absentStore";
-import authStore from "../../../stores/authStore";
+import theme from "../../../assets/theme";
 
 LicenseInfo.setLicenseKey(LicenseKey);
 
@@ -77,34 +78,11 @@ function DataGrid(props) {
 		}
 	};
 
-	// Filter if it was Permission page will have only same current month and year
-	// Other pages will have only same current year
-	// Home page will have all the records
-	const absent = props.type
-		? props.type === "Permission"
-			? absentStore.absents
-					.filter((item) => item.user._id === authStore.user._id)
-					.filter((_date) => {
-						const currentDate = new Date();
-						let formattedCurrentDate = dateFormat(currentDate, "mm yyyy");
-						let formattedValueDate = dateFormat(_date.date, "mm yyyy");
-						let thisYear = formattedValueDate === formattedCurrentDate;
-						return thisYear;
-					})
-					.filter((a) => a.type === props.type)
-			: absentStore.absents
-					.filter((item) => item.user._id === authStore.user._id)
-					.filter((_date) => {
-						const currentDate = new Date();
-						let formattedCurrentDate = dateFormat(currentDate, "yyyy");
-						let formattedValueDate = dateFormat(_date.date, "yyyy");
-						let thisYear = formattedValueDate >= formattedCurrentDate;
-						return thisYear;
-					})
-					.filter((a) => a.type === props.type)
-		: absentStore.absents.filter(
-				(item) => item.user._id === authStore.user._id
-		  );
+	const absent = absentStore.filterAbsents(props.type);
+
+	useEffect(() => {
+		absentStore.filterAbsents(props.type);
+	}, [props.type]);
 
 	const rows = absent.map((item) => ({
 		id: item.id,
@@ -115,7 +93,17 @@ function DataGrid(props) {
 	}));
 
 	const columns = [
-		{ field: "name", headerName: "Name", width: 300 },
+		{ field: "name", headerName: "Name", width: 200 },
+		{
+			field: "type",
+			headerName: "Type",
+			width: 300,
+			editable: true,
+			type: "singleSelect",
+			valueOptions: ({ row }) => {
+				return ["Permission", "Medical", "Emergency leave"];
+			},
+		},
 		{
 			field: "day",
 			headerName: "Day",
@@ -126,23 +114,13 @@ function DataGrid(props) {
 				return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 			},
 		},
+
 		{
 			field: "date",
 			headerName: "Date",
 			width: 300,
 			type: "date",
 			editable: true,
-		},
-
-		{
-			field: "type",
-			headerName: "Type",
-			width: 300,
-			editable: true,
-			type: "singleSelect",
-			valueOptions: ({ row }) => {
-				return ["Permission", "Medical", "Emergency leave"];
-			},
 		},
 
 		{
@@ -194,17 +172,14 @@ function DataGrid(props) {
 	return (
 		<Box
 			sx={{
-				height: 600,
-				width: "95%",
-				"& .actions": {
-					color: "text.secondary",
-				},
-				"& .textPrimary": {
-					color: "text.primary",
-				},
+				height: 700,
+				width: "100%",
 			}}
 		>
 			<DataGridPro
+				sx={{
+					border: 1,
+				}}
 				rows={rows}
 				columns={columns}
 				apiRef={apiRef}

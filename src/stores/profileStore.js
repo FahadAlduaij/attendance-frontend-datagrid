@@ -1,19 +1,27 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
+// stores
 import instance from "./instance";
+import absentStore from "./absentStore";
+import authStore from "./authStore";
 
 class ProfileStore {
 	constructor() {
 		makeAutoObservable(this);
 	}
 
-	profiles = [];
+	profile = [];
+	isLoading = true;
 
 	fetchProfiles = async () => {
 		try {
-			const res = await instance.get("/users/profiles");
+			if (!authStore.user) return;
+
+			const res = await instance.get("/users/profile");
 			runInAction(() => {
-				this.profiles = res.data;
+				this.profile = res.data;
+				absentStore.fetchAbsents();
+				this.isLoading = false;
 			});
 		} catch (error) {
 			console.log(error);

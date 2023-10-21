@@ -1,48 +1,40 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import { observer } from "mobx-react";
+import { Link } from "react-router-dom";
+import {
+	Stack,
+	InputAdornment,
+	IconButton,
+	Container,
+	Typography,
+	Box,
+	Grid,
+	TextField,
+	Button,
+	Avatar,
+	Paper,
+} from "@mui/material";
+
+// icons
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Stack } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 // components
-import ThemeColors from "../../theme/ThemeColors";
+import theme from "../../assets/theme";
+import Spinner from "../../components/Spinner";
 
 // stores
 import authStore from "../../stores/authStore";
-import profileStore from "../../stores/profileStore";
-import absentStore from "../../stores/absentStore";
 
 function Login() {
 	const [userData, setUserData] = React.useState({
 		username: "",
 		password: "",
 	});
-	const [open, setOpen] = React.useState(false);
 	const [passwordType, setPasswordType] = React.useState("password");
 	const [showPassword, setShowPassword] = React.useState(false);
 	const [errorStatus, setErrorStatus] = React.useState(false);
-
-	const navigate = useNavigate();
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-
-	const handleToggle = () => {
-		setOpen(!open);
-	};
 
 	const handleChange = (event) => {
 		setUserData({ ...userData, [event.target.name]: event.target.value });
@@ -60,8 +52,7 @@ function Login() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		authStore.login(userData, navigate, handleToggle, setErrorStatus);
-		profileStore.fetchProfiles();
+		authStore.login(userData, setErrorStatus);
 	};
 
 	return (
@@ -74,40 +65,34 @@ function Login() {
 				alignItems: "center",
 				justifyContent: "center",
 				height: "100vh",
-				backgroundColor: ThemeColors.primary,
+				backgroundColor: theme.palette.dark,
 			}}
 		>
-			<Backdrop
-				sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-				open={open}
-			>
-				<CircularProgress color="inherit" />
-			</Backdrop>
+			<Spinner open={authStore.isLoading} />
 
-			<Box
+			<Paper
+				elevation={3}
 				sx={{
-					width: { sm: "100%", md: "50%", lg: "30%" },
-					backgroundColor: ThemeColors.light,
-					borderRadius: 2,
-					py: 8,
-					px: 5,
+					width: { sm: "100%", md: "50%", lg: "30%", xl: "25%" },
+					p: 6,
 				}}
 			>
 				<Stack
 					direction={"column"}
 					justifyContent={"center"}
 					alignItems={"center"}
-					spacing={1}
 				>
-					<Avatar sx={{ m: 1, backgroundColor: ThemeColors.secondary }}>
+					<Avatar sx={{ m: 1, backgroundColor: theme.palette.primary.main }}>
 						<VpnKeyIcon />
 					</Avatar>
-					<Typography component="h1" variant="h5" color={ThemeColors.primary}>
-						User Login
+
+					<Typography component="h1" variant="h4" color={"primary"}>
+						Login
 					</Typography>
+
 					{errorStatus && (
 						<Typography
-							color={"#f44336"}
+							color={theme.palette.warning.main}
 							m={1}
 							alignSelf={"center"}
 							justifySelf={"center"}
@@ -117,18 +102,18 @@ function Login() {
 					)}
 				</Stack>
 
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 					<TextField
 						error={errorStatus}
 						onChange={handleChange}
 						value={userData.username}
 						margin="normal"
 						required
+						autoFocus={true}
 						fullWidth
 						id="username"
 						label="Username"
 						name="username"
-						autoFocus
 					/>
 
 					<TextField
@@ -162,10 +147,7 @@ function Login() {
 						fullWidth
 						variant="contained"
 						sx={{
-							mt: 3,
-							mb: 2,
-							backgroundColor: ThemeColors.secondary,
-							":hover": { backgroundColor: ThemeColors.secondaryHover },
+							my: 2,
 						}}
 					>
 						Login
@@ -173,38 +155,34 @@ function Login() {
 
 					<Grid container>
 						<Grid item xs>
-							<Link to={"/register"} style={{ color: ThemeColors.third }}>
-								<Typography
-									fontWeight={600}
-									variant="body2"
-									sx={{ ":hover": { color: ThemeColors.thirdHover } }}
-								>
+							<Link to={"/register"} style={{ color: theme.palette.info.main }}>
+								<Typography fontWeight={600} variant="body2">
 									Forgot password?
 								</Typography>
 							</Link>
 						</Grid>
+
 						<Grid item>
-							<Typography style={{ color: ThemeColors.third }} variant="body2">
+							<Typography
+								style={{ color: theme.palette.info.main }}
+								variant="body2"
+							>
 								Not registered yet?
 							</Typography>
 						</Grid>
+
 						<Grid item>
-							<Link to={"/register"} style={{ color: ThemeColors.third }}>
-								<Typography
-									ml={0.4}
-									fontWeight={600}
-									variant="body2"
-									sx={{ ":hover": { color: ThemeColors.thirdHover } }}
-								>
+							<Link to={"/register"} style={{ color: theme.palette.info.main }}>
+								<Typography ml={0.4} fontWeight={600} variant="body2">
 									Register
 								</Typography>
 							</Link>
 						</Grid>
 					</Grid>
 				</Box>
-			</Box>
+			</Paper>
 		</Container>
 	);
 }
 
-export default Login;
+export default observer(Login);

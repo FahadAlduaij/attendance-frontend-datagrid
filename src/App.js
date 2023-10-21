@@ -1,28 +1,26 @@
 import React from "react";
-import { observer } from "mobx-react";
 import "./App.css";
-import { CssBaseline } from "@mui/material";
+import { observer } from "mobx-react";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 
 // components
-import SignedRoutes from "./routes/SignedRoutes";
-import NotSignedRoutes from "./routes/NotSignedRoutes";
+import theme from "./assets/theme";
+import RoutesPage from "./routes";
 import NavBar from "./components/NavBar";
+import Spinner from "./components/Spinner";
 
 // stores
 import authStore from "./stores/authStore";
 
 function App() {
 	return (
-		<CssBaseline>
-			{authStore.isSigned ? (
-				<>
-					<NavBar />
-					<SignedRoutes />
-				</>
-			) : (
-				<NotSignedRoutes />
-			)}
-		</CssBaseline>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<Spinner open={authStore.isLoading} />
+
+			{authStore.user && <NavBar />}
+			<RoutesPage />
+		</ThemeProvider>
 	);
 }
 

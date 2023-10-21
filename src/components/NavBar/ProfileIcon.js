@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 // MUI
 import {
 	Stack,
-	Box,
 	IconButton,
 	Typography,
 	Menu,
@@ -18,7 +17,7 @@ import Logout from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // components
-import ThemeColors from "../../theme/ThemeColors";
+import theme from "../../assets/theme";
 
 // stores
 import authStore from "../../stores/authStore";
@@ -28,11 +27,7 @@ function ProfileIcon() {
 	const [anchorElUser, setAnchorElUser] = React.useState(null);
 	const navigate = useNavigate();
 
-	const currentProfile = authStore.isSigned
-		? profileStore.profiles.find(
-				(profile) => profile._id === authStore.user._id
-		  )
-		: null;
+	const profile = profileStore.profile;
 
 	const handleOpenUserMenu = (event) => {
 		setAnchorElUser(event.currentTarget);
@@ -56,13 +51,9 @@ function ProfileIcon() {
 	};
 	return (
 		<>
-			{authStore.isSigned && (
-				<Box sx={{ flexGrow: 0 }}>
-					<Stack
-						direction={"row"}
-						justifyContent={"center"}
-						alignItems={"center"}
-					>
+			{authStore?.user && (
+				<>
+					<Stack>
 						<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 							<Avatar
 								alt="User Avatar"
@@ -73,11 +64,11 @@ function ProfileIcon() {
 							<Typography
 								marginLeft={1}
 								variant="body2"
-								color={ThemeColors.third}
+								color={theme.palette.info.main}
 							>
 								{authStore.user.name}
 							</Typography>
-							<KeyboardArrowDownIcon sx={{ color: ThemeColors.third }} />
+							<KeyboardArrowDownIcon sx={{ color: theme.palette.info.main }} />
 						</IconButton>
 					</Stack>
 
@@ -110,7 +101,7 @@ function ProfileIcon() {
 							<Typography textAlign="center">Logout</Typography>
 						</MenuItem>
 					</Menu>
-				</Box>
+				</>
 			)}
 		</>
 	);

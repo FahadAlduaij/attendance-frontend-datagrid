@@ -1,43 +1,52 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { FormControl, Input, InputLabel, Stack } from "@mui/material";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
+import React, { useState } from "react";
+import { observer } from "mobx-react";
+import { Link } from "react-router-dom";
+import {
+	TextField,
+	Grid,
+	Box,
+	Stack,
+	Typography,
+	Container,
+	Button,
+	Avatar,
+	InputAdornment,
+	IconButton,
+	Paper,
+} from "@mui/material";
+
+// icons
 import Visibility from "@mui/icons-material/Visibility";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 // components
-import ThemeColors from "../../theme/ThemeColors";
+import theme from "../../assets/theme";
+import Spinner from "../../components/Spinner";
 
 // stores
 import authStore from "../../stores/authStore";
 import profileStore from "../../stores/profileStore";
 
 function Register() {
-	const [userData, setUserData] = React.useState({
+	const [userData, setUserData] = useState({
 		username: "",
 		password: "",
 		name: "",
 	});
-	const [confirmPassword, setConfirmPassword] = React.useState("");
-	const [passwordType, setPasswordType] = React.useState("password");
-	const [showPassword, setShowPassword] = React.useState(false);
-	const [notConfirmedPassword, setNotConfirmedPassword] = React.useState(false);
-	const [notConfirmedPasswordText, setNotConfirmedPasswordText] =
-		React.useState("");
-	const [open, setOpen] = React.useState(false);
-	const navigate = useNavigate();
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [passwordType, setPasswordType] = useState("password");
+	const [showPassword, setShowPassword] = useState(false);
+	const [notConfirmedPassword, setNotConfirmedPassword] = useState(false);
+	const [notConfirmedPasswordText, setNotConfirmedPasswordText] = useState("");
+	const [open, setOpen] = useState(false);
+	const [errorStatus, setErrorStatus] = React.useState(false);
+
+	// useEffect(() => {
+	// 	if (authStore.user) {
+	// 		return navigate("/home");
+	// 	}
+	// }, []);
 
 	const handleToggle = () => {
 		setOpen(!open);
@@ -70,7 +79,7 @@ function Register() {
 		} else {
 			setNotConfirmedPassword(false);
 			setNotConfirmedPasswordText("");
-			authStore.register(userData, navigate, handleToggle);
+			authStore.register(userData, setErrorStatus);
 			profileStore.fetchProfiles();
 		}
 	};
@@ -85,23 +94,16 @@ function Register() {
 				alignItems: "center",
 				justifyContent: "center",
 				height: "100vh",
-				backgroundColor: ThemeColors.primary,
+				backgroundColor: theme.palette.dark,
 			}}
 		>
-			<Backdrop
-				sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-				open={open}
-			>
-				<CircularProgress color="inherit" />
-			</Backdrop>
+			<Spinner open={authStore.isLoading} />
 
-			<Box
+			<Paper
+				elevation={3}
 				sx={{
-					width: { sm: "100%", md: "50%", lg: "30%" },
-					backgroundColor: ThemeColors.light,
-					borderRadius: 2,
-					py: 8,
-					px: 5,
+					width: { sm: "100%", md: "50%", lg: "30%", xl: "25%" },
+					p: 6,
 				}}
 			>
 				<Stack
@@ -110,15 +112,26 @@ function Register() {
 					alignItems={"center"}
 					spacing={1}
 				>
-					<Avatar sx={{ m: 1, backgroundColor: ThemeColors.secondary }}>
+					<Avatar sx={{ m: 1, backgroundColor: theme.palette.primary.main }}>
 						<LockOutlinedIcon />
 					</Avatar>
-					<Typography component="h1" variant="h5" color={ThemeColors.primary}>
-						User Register
+					<Typography component="h1" variant="h4" color={"primary"}>
+						Register
 					</Typography>
+
+					{errorStatus && (
+						<Typography
+							color={theme.palette.warning.main}
+							m={1}
+							alignSelf={"center"}
+							justifySelf={"center"}
+						>
+							Username is already exist.
+						</Typography>
+					)}
 				</Stack>
 
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 					<TextField
 						onChange={handleChange}
 						value={userData.username}
@@ -199,10 +212,7 @@ function Register() {
 						fullWidth
 						variant="contained"
 						sx={{
-							mt: 3,
-							mb: 2,
-							backgroundColor: ThemeColors.secondary,
-							":hover": { backgroundColor: ThemeColors.secondaryHover },
+							my: 2,
 						}}
 					>
 						Register
@@ -210,27 +220,25 @@ function Register() {
 
 					<Grid container alignItems={"center"} justifyContent={"center"}>
 						<Grid item>
-							<Typography style={{ color: ThemeColors.third }} variant="body2">
+							<Typography
+								style={{ color: theme.palette.info.main }}
+								variant="body2"
+							>
 								Already have an account?
 							</Typography>
 						</Grid>
 						<Grid item>
-							<Link to={"/"} style={{ color: ThemeColors.third }}>
-								<Typography
-									variant="body2"
-									ml={0.4}
-									fontWeight={600}
-									sx={{ ":hover": { color: ThemeColors.thirdHover } }}
-								>
+							<Link to={"/"} style={{ color: theme.palette.info.main }}>
+								<Typography variant="body2" ml={0.4} fontWeight={600}>
 									Login
 								</Typography>
 							</Link>
 						</Grid>
 					</Grid>
 				</Box>
-			</Box>
+			</Paper>
 		</Container>
 	);
 }
 
-export default Register;
+export default observer(Register);
