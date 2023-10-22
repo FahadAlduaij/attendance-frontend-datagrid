@@ -28,17 +28,33 @@ function EditToolbar(props) {
 	const { apiRef } = props;
 	const navigate = useNavigate();
 
+	// If the user pressed Add new? choose automatically the type if absent.
+	const path = window.location.pathname.slice(1);
+	const type = path.charAt(0).toUpperCase() + path.slice(1);
+
+	// If the user pressed Add new? choose automatically the current Day.
+	const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+	const d = new Date();
+	let currentDay = weekday[d.getDay()];
+
+	// To map on the top filter buttons
+	const navButtons = [
+		{ title: "all", route: "" },
+		{ title: "permission", route: "permission" },
+		{ title: "medical", route: "medical" },
+		{ title: "emergency", route: "emergency" },
+	];
+
 	const handleClick = () => {
 		const id = uuidv4();
-
 		const row = [
 			{
 				id,
-				user: authStore.user._id,
-				name: authStore.user.name,
-				day: "Sunday",
+				user: authStore.user?._id,
+				name: authStore.user?.name,
+				day: currentDay,
 				date: dateFormat(Date.now(), "mmmm dd yyyy"),
-				type: "Permission",
+				type: type ? type : "Permission",
 				isNew: true,
 			},
 		];
@@ -82,68 +98,27 @@ function EditToolbar(props) {
 				>
 					Add record
 				</Button>
-				<Button
-					startIcon={<FilterAltIcon />}
-					onClick={() => handleNavigate("")}
-					sx={{
-						color: theme.palette.primary.main,
-						width: 150,
-						padding: 2,
-						":hover": {
-							backgroundColor: theme.palette.primary.main,
-							color: theme.palette.secondary.main,
-						},
-					}}
-				>
-					All
-				</Button>
 
-				<Button
-					startIcon={<FilterAltIcon />}
-					onClick={() => handleNavigate("permission")}
-					sx={{
-						color: theme.palette.primary.main,
-						width: 150,
-						padding: 2,
-						":hover": {
-							backgroundColor: theme.palette.primary.main,
-							color: theme.palette.secondary.main,
-						},
-					}}
-				>
-					Permission
-				</Button>
-
-				<Button
-					startIcon={<FilterAltIcon />}
-					onClick={() => handleNavigate("medical")}
-					sx={{
-						color: theme.palette.primary.main,
-						width: 150,
-						padding: 2,
-						":hover": {
-							backgroundColor: theme.palette.primary.main,
-							color: theme.palette.secondary.main,
-						},
-					}}
-				>
-					Medical
-				</Button>
-				<Button
-					startIcon={<FilterAltIcon />}
-					onClick={() => handleNavigate("emergency")}
-					sx={{
-						color: theme.palette.primary.main,
-						width: 150,
-						padding: 2,
-						":hover": {
-							backgroundColor: theme.palette.primary.main,
-							color: theme.palette.secondary.main,
-						},
-					}}
-				>
-					Emergency
-				</Button>
+				{navButtons.map((btn, index) => {
+					return (
+						<Button
+							key={index}
+							startIcon={<FilterAltIcon />}
+							onClick={() => handleNavigate(btn.route)}
+							sx={{
+								color: theme.palette.primary.main,
+								width: 150,
+								padding: 2,
+								":hover": {
+									backgroundColor: theme.palette.primary.main,
+									color: theme.palette.secondary.main,
+								},
+							}}
+						>
+							{btn.title}
+						</Button>
+					);
+				})}
 
 				<GridToolbarFilterButton
 					sx={{

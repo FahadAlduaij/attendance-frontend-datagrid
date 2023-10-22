@@ -25,10 +25,7 @@ function RoutesPage() {
 						element={<Attendance type={"Permission"} />}
 					/>
 					<Route path="medical" element={<Attendance type={"Medical"} />} />
-					<Route
-						path="emergency"
-						element={<Attendance type={"Emergency leave"} />}
-					/>
+					<Route path="emergency" element={<Attendance type={"Emergency"} />} />
 					<Route path="/profile" element={<Profile />} />
 				</Route>
 			)}

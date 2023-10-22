@@ -101,9 +101,7 @@ function NavBar() {
 											<Typography textAlign="center">Medical</Typography>
 										</MenuItem>
 										<MenuItem onClick={() => handleNavigate("emergency")}>
-											<Typography textAlign="center">
-												Emergency leave
-											</Typography>
+											<Typography textAlign="center">Emergency</Typography>
 										</MenuItem>
 									</Menu>
 								</Box>
@@ -185,7 +183,7 @@ function NavBar() {
 											},
 										}}
 									>
-										Emergency leave
+										Emergency
 									</Button> */}
 								</Stack>
 

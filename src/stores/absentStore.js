@@ -10,7 +10,6 @@ class AbsentStore {
 	}
 
 	absents = [];
-	filteredAbsents = [];
 	isLoading = true;
 
 	fetchAbsents = async () => {
@@ -81,7 +80,7 @@ class AbsentStore {
 
 	// Filter function:
 	// If it's "Permission" page will show only current month and year
-	// "Medical" and "Emergency leave" pages will show only current year
+	// "Medical" and "Emergency" pages will show only current year
 	// "Home page" will show all the records
 	filterAbsents = (type) => {
 		let absents = this.absents;
@@ -97,10 +96,9 @@ class AbsentStore {
 						return thisYear;
 					})
 					.filter((_absent) => _absent.type === type);
-
 				absents = permissionFilter;
-
 				break;
+
 			case "Medical":
 				const medicalFilter = this.absents
 					.filter((_date) => {
@@ -113,7 +111,8 @@ class AbsentStore {
 
 				absents = medicalFilter;
 				break;
-			case "Emergency leave":
+
+			case "Emergency":
 				const emergencyLeaveFilter = this.absents
 					.filter((_date) => {
 						let formattedCurrentDate = dateFormat(currentDate, "yyyy");
